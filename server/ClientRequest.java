@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class ClientRequest
 {
+
     public static void main(String args[])
     {
         
@@ -22,10 +23,13 @@ public class ClientRequest
          e.printStackTrace();
     }
 
-            for(int i=0 ; i<5 ; i++){
+            for(int i=0 ; i<1; i++){
             // lookup method to find reference of remote object
                      new Thread(){
-                             
+
+                            Random vertRand = new Random();
+                            Random queryRand = new Random();
+                            String [] queries = new String[]{"A","A","A","A","Q","Q","Q","Q","Q"};
                              String value="Reflection in Java";
                              List<Integer> answer;
                              public void run(){
@@ -36,25 +40,39 @@ public class ClientRequest
                                             (IServer) Naming.lookup("rmi://localhost:1900"+
                                                     "/geeksforgeeks");
 
+                                    IServer OptAccess =
+                                            (IServer) Naming.lookup("rmi://localhost:1800"+
+                                                    "/geeksforgeeks");
 
-                                    List<String> list = Arrays.asList("A 2 3" , "Q 1 3" , "D 2 3","Q 1 3","F");                
+
+                                    List<String> list = new ArrayList<>();
+                                    for(int i=0 ; i<10; i++){
+                                        int q = queryRand.nextInt(queries.length);
+                                        int v1 = vertRand.nextInt(5) + 1;
+                                        int v2 = vertRand.nextInt(5) + 1;
+                                        String statement = queries[q] + " " + v1 + " " + v2;
+                                        list.add(statement);
+                                    }
+
+                                    list.add("F");
+
+                                    long start = System.currentTimeMillis();
+                                    answer = OptAccess.shortestPath(list);
+                                        System.out.println("Article on " + value +
+                                                " " + answer+" at GeeksforGeeks");
+                                    long  end = System.currentTimeMillis();
+                                        System.out.println("Opt Took:"  + (end - start));
+
+
+                                     start = System.currentTimeMillis();
                                     answer = access.shortestPath(list);
                                     System.out.println("Article on " + value +
                                             " " + answer+" at GeeksforGeeks");
 
-                                    try {
-                                    long end = System.currentTimeMillis();
-                                    System.out.println("end: " + end);
+                                     end = System.currentTimeMillis();
+                                    System.out.println("Normal Took:"  + (end - start));
 
-                                    
-                                        long start = System.currentTimeMillis();
-                                        FileWriter myWriter = new FileWriter("server\\end.txt",true);
-                                        myWriter.write(String.valueOf(end) + "\n");
-                                        myWriter.close();
-                                    } catch (IOException e) {
-                                        System.out.println("An error occurred.");
-                                        e.printStackTrace();
-                                   }
+
                                 }
                                  catch(Exception ae)
                                 {

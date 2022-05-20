@@ -11,6 +11,7 @@ public class ReadWriteLock {
         while(numberOfReaders == WRITE_LOCKED) wait();
         numberOfReaders++;
     }
+    
     public synchronized void releaseReadLock() {
         if(numberOfReaders <= 0) throw new IllegalMonitorStateException();
         numberOfReaders--;

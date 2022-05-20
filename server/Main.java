@@ -20,6 +20,7 @@ public class Main {
                 // geeksforgeeks
                 Naming.rebind("rmi://localhost:1900"+
                         "/geeksforgeeks",obj);
+                System.out.println("done done");        
             }
             catch(Exception ae)
             {
