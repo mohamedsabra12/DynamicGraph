@@ -25,18 +25,19 @@ public class OptServer extends UnicastRemoteObject implements IServer {
     protected OptServer() throws RemoteException {
         super();
         graph = new Graph();
-//        exec = Executors.newFixedThreadPool(100);
-        //rwLock = new ReadWriteLock();
+        exec = Executors.newFixedThreadPool(50);
     }
 
     public synchronized List<Integer> shortestPath(List<String> patch) throws RemoteException {
+
+
         List<Integer> result = new ArrayList<>();
         List<int[]> readQueries = new ArrayList<>();
 
         for(String query: patch){
 
 
-            System.out.println(query);
+
             if(query.equals("F")) {
                 runReadQueries(result, readQueries);
 //                exec.shutdownNow();
@@ -53,12 +54,12 @@ public class OptServer extends UnicastRemoteObject implements IServer {
 
                 runReadQueries(result, readQueries);
                 graph.add(src,des);
-                System.out.println("Added " + src + " " + des);
+                //System.out.println("Added " + src + " " + des);
 
             }else if(statement.equals("D")){
                 runReadQueries(result, readQueries);
                 graph.remove(src,des);
-                System.out.println("removed " + src + " " + des);
+                //System.out.println("removed " + src + " " + des);
             }else if(statement.equals("Q")){
                 readQueries.add(new int[]{src,des});
                 //result.add(graph.query(src,des));
@@ -72,7 +73,7 @@ public class OptServer extends UnicastRemoteObject implements IServer {
         if(readQueries.size() == 0)
             return;
 
-        exec = Executors.newFixedThreadPool(readQueries.size());
+
         int [] readResults = new int[readQueries.size()];
 
         Collection<ReaderCallable> callables = new ArrayList<>();
@@ -91,11 +92,11 @@ public class OptServer extends UnicastRemoteObject implements IServer {
             e.printStackTrace();
         }
         finally {
-            exec.shutdownNow();
+
             readQueries.clear();
             for (int res : readResults)
                 result.add(res);
-            System.out.println("done finally");
+
         }
     }
 }

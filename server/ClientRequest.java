@@ -29,7 +29,7 @@ public class ClientRequest
 
                             Random vertRand = new Random();
                             Random queryRand = new Random();
-                            String [] queries = new String[]{"A","A","A","A","Q","Q","Q","Q","Q"};
+                            String [] queries = new String[]{"A","Q","D"};
                              String value="Reflection in Java";
                              List<Integer> answer;
                              public void run(){
@@ -46,32 +46,34 @@ public class ClientRequest
 
 
                                     List<String> list = new ArrayList<>();
-                                    for(int i=0 ; i<10; i++){
+                                    for(int i=0 ; i<10000; i++){
                                         int q = queryRand.nextInt(queries.length);
-                                        int v1 = vertRand.nextInt(5) + 1;
-                                        int v2 = vertRand.nextInt(5) + 1;
+                                        int v1 = vertRand.nextInt(600) + 1;
+                                        int v2 = vertRand.nextInt(600) + 1;
                                         String statement = queries[q] + " " + v1 + " " + v2;
                                         list.add(statement);
                                     }
 
                                     list.add("F");
 
+
+
+
                                     long start = System.currentTimeMillis();
-                                    answer = OptAccess.shortestPath(list);
-                                        System.out.println("Article on " + value +
-                                                " " + answer+" at GeeksforGeeks");
-                                    long  end = System.currentTimeMillis();
-                                        System.out.println("Opt Took:"  + (end - start));
-
-
-                                     start = System.currentTimeMillis();
                                     answer = access.shortestPath(list);
                                     System.out.println("Article on " + value +
                                             " " + answer+" at GeeksforGeeks");
 
-                                     end = System.currentTimeMillis();
+                                    long end = System.currentTimeMillis();
                                     System.out.println("Normal Took:"  + (end - start));
 
+
+                                    start = System.currentTimeMillis();
+                                    answer = OptAccess.shortestPath(list);
+                                    System.out.println("Article on " + value +
+                                            " " + answer+" at GeeksforGeeks");
+                                    end = System.currentTimeMillis();
+                                    System.out.println("Opt Took:"  + (end - start));
 
                                 }
                                  catch(Exception ae)

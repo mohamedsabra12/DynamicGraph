@@ -27,6 +27,7 @@ public class ReaderCallable implements Callable{
 
             public Integer call() {
                 this.result[index] = graph.query(src,des);
+                //System.out.println("result of index: " + index + " is " + this.result[index]);
                 return 0;
             }
 }
